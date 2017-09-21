@@ -44,11 +44,35 @@ public class Screen {
 						int tileCoord = Math.abs(map.map[(Math.max(xOffset,0)-16+xMax)/sheet.tileRes+(Math.max(yOffset,0)-16+yMax)/sheet.tileRes*MAP_WIDTH]);
 						tileX = tileCoord%(sheet.width/sheet.tileRes);
 						tileY = tileCoord/(sheet.width/sheet.tileRes);
-						//System.out.println(tileX +" "+tileY);
-						pixels[(y * row)+(x)] = sheet.pixels[(((y-yMin)%sheet.tileRes+(tileY*sheet.tileRes))*sheet.width)+((x-xMin)%sheet.tileRes+tileX*sheet.tileRes)];
+						//System.out.println((pixels[(y * row)+(x)] >> 24) & 0xff);
+						int col1 = sheet.pixels[(((y-yMin)%sheet.tileRes+(tileY*sheet.tileRes))*sheet.width)+((x-xMin)%sheet.tileRes+tileX*sheet.tileRes)];
+						int col2 = pixels[(y * row)+(x)];
+						double ratio = (col1 >> 24) & 0xff;
+						pixels[(y * row)+(x)] = blend(col2,col1,ratio/255);
 					}
 				}
 			}
 		}
+	}
+	
+	private int blend (int a, int b, double ratio) {
+	    double iRatio = 1.0f - ratio;
+
+	    int aA = (a >> 24 & 0xff);
+	    int aR = ((a & 0xff0000) >> 16);
+	    int aG = ((a & 0xff00) >> 8);
+	    int aB = (a & 0xff);
+
+	    int bA = (b >> 24 & 0xff);
+	    int bR = ((b & 0xff0000) >> 16);
+	    int bG = ((b & 0xff00) >> 8);
+	    int bB = (b & 0xff);
+	    
+	    int a1 = (int)((aA * iRatio) + (bA * ratio));
+	    int r1 = (int)((aR * iRatio) + (bR * ratio));
+	    int g1 = (int)((aG * iRatio) + (bG * ratio));
+	    int b1 = (int)((aB * iRatio) + (bB * ratio));
+
+	    return a1 << 24 | r1 << 16 | g1 << 8 | b1;
 	}
 }

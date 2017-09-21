@@ -5,6 +5,9 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -29,14 +32,12 @@ public class Game extends Canvas implements Runnable{
 	public boolean running = false;
 	public int tickCount = 0;
 	
-	private BufferedImage image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
+	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gs = ge.getDefaultScreenDevice();
+    GraphicsConfiguration gc = gs.getDefaultConfiguration();
+	
+	private BufferedImage image = gc.createCompatibleImage(WIDTH, HEIGHT);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-	
-	private BufferedImage image1 = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
-	private int[] pixels1 = ((DataBufferInt) image1.getRaster().getDataBuffer()).getData();
-	
-	private BufferedImage image2 = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
-	private int[] pixels2 = ((DataBufferInt) image2.getRaster().getDataBuffer()).getData();
 	
 	
 	public Screen screen;
@@ -163,22 +164,16 @@ public class Game extends Canvas implements Runnable{
 		player.offsetMath();
 		screen.renderLayer(pixels, WIDTH,1);
 		
-		screen.renderLayer(pixels1, WIDTH,2); 
-		player.render(pixels1, WIDTH);
-		screen.renderLayer(pixels2, WIDTH,3);
+		screen.renderLayer(pixels, WIDTH,2);
+		player.render(pixels, WIDTH);
+		screen.renderLayer(pixels, WIDTH,3);
 		
 		Graphics g = bs.getDrawGraphics();
-		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		//long stime = System.nanoTime();
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
-		//long etime = System.nanoTime();
-		//System.out.println(etime-stime);
-		g.drawImage(image1, 0, 0, getWidth(), getHeight(), null);
-		g.drawImage(image2, 0, 0, getWidth(), getHeight(), null);
 		
-		//g.dispose();
+		g.dispose();
 		bs.show();
 	}
 	
