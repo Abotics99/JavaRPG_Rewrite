@@ -113,7 +113,7 @@ public class Game extends Canvas implements Runnable{
 			
 			if(System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("X: "+player.playerX/32+", Y: "+player.playerY/32+"\nTicks: "+ticks+", Frames: "+frames);
+				System.out.println("X: "+player.playerX+", Y: "+player.playerY+"\nTicks: "+ticks+", Frames: "+frames);
 				frames = 0;
 				ticks=0;
 			}
@@ -143,6 +143,10 @@ public class Game extends Canvas implements Runnable{
 		if(input.right.isPressed()&&!(player.isColliding(16+playerOffsets[3],-16-playerOffsets[0])||player.isColliding(16+playerOffsets[3],15+playerOffsets[1]))) {
 			player.playerX+=1;
 			isWalking+=8;
+		}
+		if(input.test.isPressed()) {
+			player.playerX=319;
+			player.playerY=82;
 		}
 		if(isWalking>0) {
 			player.isWalking=true;

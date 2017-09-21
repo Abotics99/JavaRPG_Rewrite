@@ -31,6 +31,7 @@ public class InputHandler implements KeyListener {
 	public Key down = new Key();
 	public Key left = new Key();
 	public Key right = new Key();
+	public Key test = new Key();
 	
 	public void keyPressed(KeyEvent e) {
 		toggleKey(e.getKeyCode(),true);
@@ -56,6 +57,9 @@ public class InputHandler implements KeyListener {
 		}
 		if(keyCode == KeyEvent.VK_D) {
 			right.toggle(isPressed);
+		}
+		if(keyCode == KeyEvent.VK_E) {
+			test.toggle(isPressed);
 		}
 	}
 

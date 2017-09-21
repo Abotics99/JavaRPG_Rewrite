@@ -44,7 +44,6 @@ public class Screen {
 						int tileCoord = Math.abs(map.map[(Math.max(xOffset,0)-16+xMax)/sheet.tileRes+(Math.max(yOffset,0)-16+yMax)/sheet.tileRes*MAP_WIDTH]);
 						tileX = tileCoord%(sheet.width/sheet.tileRes);
 						tileY = tileCoord/(sheet.width/sheet.tileRes);
-						//System.out.println((pixels[(y * row)+(x)] >> 24) & 0xff);
 						int col1 = sheet.pixels[(((y-yMin)%sheet.tileRes+(tileY*sheet.tileRes))*sheet.width)+((x-xMin)%sheet.tileRes+tileX*sheet.tileRes)];
 						int col2 = pixels[(y * row)+(x)];
 						double ratio = (col1 >> 24) & 0xff;
@@ -56,7 +55,7 @@ public class Screen {
 	}
 	
 	private int blend (int a, int b, double ratio) {
-	    double iRatio = 1.0f - ratio;
+	    double iRatio = 1.0 - ratio;
 
 	    int aA = (a >> 24 & 0xff);
 	    int aR = ((a & 0xff0000) >> 16);
